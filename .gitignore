@@ -1,6 +1,10 @@
-﻿__pycache__/
+__pycache__/
 *.pyc
 *.db
 .env
 .vscode/
+*.zip
+*.msi
 get-pip.py
+.vercel
+node_modules/

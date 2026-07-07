@@ -4,8 +4,16 @@ import os, sqlite3, json, csv, io
 from flask import Flask, render_template, request, jsonify, g, send_file
 
 app = Flask(__name__)
+
+# 添加 CORS 支持
+@app.after_request
+def add_cors(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    return response
 app.secret_key = os.urandom(24)
-DATABASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data.db")
+DATABASE = os.environ.get("DATABASE_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "data.db"))
 
 SESSIONS = [
   {
@@ -350,7 +358,6 @@ def init_db():
     ")")
     db.commit(); db.close()
 
-init_db()
 
 @app.route("/")
 def index():
@@ -479,3 +486,4 @@ if __name__ == "__main__":
     init_db()
     port = int(os.environ.get("PORT", 9000))
     app.run(host="0.0.0.0", port=port, debug=False)
+
