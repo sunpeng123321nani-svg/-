@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>场次汇总 - 双选会报名系统</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Microsoft YaHei,PingFang SC,sans-serif;background:#f0f2f5;color:#333}
+.header{background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;padding:20px 30px}
+.header h1{font-size:22px}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.nav-bar{display:flex;align-items:center;gap:10px}
+.nav-bar a{color:#fff;text-decoration:none;font-size:14px;padding:8px 16px;border-radius:4px}
+.nav-bar a:hover{background:rgba(255,255,255,.15)}.nav-bar a.active{background:rgba(255,255,255,.2)}
+.card{background:#fff;border-radius:8px;padding:20px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.card h2{font-size:18px;margin-bottom:15px;padding-bottom:10px;border-bottom:2px solid #1a73e8}
+.group-title{font-size:15px;font-weight:bold;margin:18px 0 8px;padding:8px 12px;background:#e8f0fe;border-radius:6px;color:#1a73e8}
+.session-card{border:1px solid #e0e0e0;border-radius:8px;margin-bottom:8px;overflow:hidden;transition:box-shadow .2s}
+.session-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.session-header{display:flex;align-items:center;padding:14px 16px;cursor:pointer;background:#fff}
+.session-header:hover{background:#fafafa}
+.session-header .arrow{transition:transform .3s;margin-right:10px;font-size:12px;color:#888}
+.session-header.open .arrow{transform:rotate(90deg)}
+.session-body{padding:0 16px 14px;display:none}.session-body.show{display:block}
+.info-text{font-size:12px;color:#888;margin:0 12px}
+.count-badge{background:#1a73e8;color:#fff;border-radius:10px;padding:2px 10px;font-size:11px;font-weight:bold;margin-left:auto}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:bold}
+.badge-green{background:#e8f5e9;color:#2e7d32}.badge-orange{background:#fff3e0;color:#e65100}
+.badge-blue{background:#e3f2fd;color:#1565c0}
+table{width:100%;border-collapse:collapse}
+table th{background:#f5f5f5;padding:10px 12px;text-align:left;font-size:13px;font-weight:bold;border-bottom:2px solid #ddd;white-space:nowrap}
+table td{padding:10px 12px;border-bottom:1px solid #eee;font-size:13px}
+table tr:hover{background:#fafafa}
+.empty-state{text-align:center;padding:40px;color:#999}
+</style></head><body>
+<div class="header"><div class="nav-bar"><h1>双选会报名系统</h1><a href="index.html">报名管理</a><a href="summary.html" class="active">场次汇总</a></div></div>
+<div class="container">
+<div class="card"><h2>各场次报名情况</h2>
+<div id="summaryContainer"></div>
+</div></div>
+<script>
+var SS = [{"id": 1, "name": "全国重点高校巡回招聘会", "city": "成都", "university": "四川大学（985/211/双一流）", "date": "9月7日（周一）14:30-17:30", "campus": "望江校区"}, {"id": 2, "name": "全国重点高校巡回招聘会", "city": "成都", "university": "电子科技大学（985/211/双一流）", "date": "9月8日（周二）9:30-12:00", "campus": "清水河校区"}, {"id": 3, "name": "全国重点高校巡回招聘会", "city": "成都", "university": "西南交通大学", "date": "9月8日（周二）14:30-17:30", "campus": "犀浦校区"}, {"id": 4, "name": "全国重点高校巡回招聘会", "city": "成都", "university": "成都理工大学", "date": "9月9日（周三）14:30-17:30", "campus": "校本部"}, {"id": 5, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西北大学", "date": "9月10日（周四）14:30-17:30", "campus": "长安校区"}, {"id": 6, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西南科技大学", "date": "9月11日（周五）14:30-17:30", "campus": "未央校区"}, {"id": 7, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西北大学", "date": "9月14日（周一）14:30-17:30", "campus": "太白校区"}, {"id": 8, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西安科技大学", "date": "9月15日（周二）14:30-17:30", "campus": "雁塔校区"}, {"id": 9, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西安交通大学", "date": "9月16日（周三）14:30-17:30", "campus": "兴庆校区"}, {"id": 10, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西安电子科技大学", "date": "9月17日（周四）14:30-17:30", "campus": "北校区"}, {"id": 11, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西北工业大学", "date": "9月18日（周五）14:30-17:30", "campus": "友谊校区"}, {"id": 12, "name": "全国重点高校巡回招聘会", "city": "哈尔滨", "university": "哈尔滨工程大学", "date": "9月20日（周日）9:30-12:00", "campus": "本部"}, {"id": 13, "name": "全国重点高校巡回招聘会", "city": "哈尔滨", "university": "哈尔滨工业大学", "date": "9月20日（周日）14:30-17:30", "campus": "一校区"}, {"id": 14, "name": "全国重点高校巡回招聘会", "city": "长春", "university": "吉林大学", "date": "9月21日（周一）14:30-17:30", "campus": "前卫南区"}, {"id": 15, "name": "全国重点高校巡回招聘会", "city": "长沙", "university": "湖南大学", "date": "9月22日（周二）14:30-17:30", "campus": "南湖校区"}, {"id": 16, "name": "全国重点高校巡回招聘会", "city": "长沙", "university": "中南大学", "date": "9月23日（周三）14:30-17:30", "campus": "本部校区"}, {"id": 17, "name": "全国重点高校巡回招聘会", "city": "南京", "university": "南京大学", "date": "9月28日（周一）14:30-17:30", "campus": "鼓楼校区"}, {"id": 18, "name": "全国重点高校巡回招聘会", "city": "南京", "university": "南京航空航天大学", "date": "9月29日（周二）9:30-12:00", "campus": "将军路校区"}, {"id": 19, "name": "全国重点高校巡回招聘会", "city": "南京", "university": "南京理工大学", "date": "9月29日（周二）14:30-17:30", "campus": "南京校区"}, {"id": 20, "name": "全国重点高校巡回招聘会", "city": "南京", "university": "东南大学", "date": "9月30日（周三）9:30-12:00", "campus": "九龙湖校区"}, {"id": 21, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "四川大学", "date": "10月12日（周一）14:30-17:30", "campus": "望江校区"}, {"id": 22, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "成都理工大学", "date": "10月13日（周二）14:30-17:30", "campus": "成都校区"}, {"id": 23, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "电子科技大学", "date": "10月14日（周三）14:30-17:30", "campus": "清水河校区"}, {"id": 24, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "西南交通大学", "date": "10月15日（周四）14:30-17:30", "campus": "犀浦校区"}, {"id": 25, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "成都信息工程大学", "date": "10月16日（周五）9:30-12:00", "campus": "航空港校区"}, {"id": 26, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "南京理工大学", "date": "10月16日（周五）14:30-17:30", "campus": "南京校区"}, {"id": 27, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "西华大学", "date": "10月19日（周一）14:30-17:30", "campus": "校本部"}, {"id": 28, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "四川农业大学", "date": "10月20日（周二）14:30-17:30", "campus": "成都校区"}];
+var SK = "shuangxuan_regs";
+function gR(){try{return JSON.parse(localStorage.getItem(SK))||[]}catch(e){return[]}}
+function esc(s){var d=document.createElement("div");d.appendChild(document.createTextNode(s));return d.innerHTML}
+function toggleS(id){document.getElementById("sb-"+id).classList.toggle("show");document.getElementById("sh-"+id).classList.toggle("open")}
+function render(){var r=gR();var gr={};SS.forEach(function(s){var sid=s.id;var cos=r.filter(function(x){return x.selected_sessions&&x.selected_sessions.indexOf(sid)>=0}).map(function(x){return{company_name:x.company_name,company_type:x.company_type||"-",payment_status:x.payment_status||"未付款",teacher:x.teacher,contact_person:x.contact_person||"-",contact_phone:x.contact_phone||"-",price:x.price||"0",created_at:x.created_at||""}});if(!gr[s.city])gr[s.city]=[];gr[s.city].push({session_id:s.id,city:s.city,university:s.university,date:s.date,campus:s.campus,companies:cos})});var c=document.getElementById("summaryContainer");c.innerHTML="";Object.keys(gr).sort().forEach(function(ct){var ss=gr[ct];c.innerHTML+='<div class="group-title">'+ct+"（共"+ss.length+"场）</div>";ss.sort(function(a,b){return a.session_id-b.session_id});ss.forEach(function(s){var tc=s.companies.length;var cd=document.createElement("div");cd.className="session-card";cd.innerHTML='<div class="session-header" id="sh-'+s.session_id+'" onclick="toggleS('+s.session_id+')"><span class="arrow">&#9654;</span><strong>'+s.university+'</strong><span class="info-text">'+s.city+" | "+s.date+" | "+s.campus+'</span><span class="count-badge">'+tc+"家企业</span></div>"+'<div class="session-body" id="sb-'+s.session_id+'">'+(tc?'<table><thead><tr><th>企业名称</th><th>单位性质</th><th>付款状态</th><th>老师</th><th>联系人</th><th>电话</th><th>金额</th><th>时间</th></tr></thead><tbody>'+s.companies.map(function(x){return'<tr><td><strong>'+esc(x.company_name)+'</strong></td><td>'+x.company_type+"</td><td>"+(x.payment_status==="已付款"?'<span class="badge badge-green">已付款</span>':'<span class="badge badge-orange">未付款</span>')+'</td><td><span class="badge badge-blue">'+esc(x.teacher)+'</span></td><td>'+esc(x.contact_person)+"</td><td>"+esc(x.contact_phone)+"</td><td>￥"+(x.price||"0")+'</td><td style="font-size:11px;color:#888">'+x.created_at.slice(5,16)+"</td></tr>"}).join("")+'</tbody></table>':'<div style="color:#bbb;padding:10px;font-size:13px">暂无企业报名</div>')+"</div>";c.appendChild(cd)})})}
+render();
+</script></body></html>

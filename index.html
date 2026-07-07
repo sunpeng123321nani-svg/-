@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>双选会企业报名系统</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Microsoft YaHei,PingFang SC,sans-serif;background:#f0f2f5;color:#333}
+.header{background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;padding:20px 30px}
+.header h1{font-size:22px}.header p{font-size:14px;opacity:.85;margin-top:5px}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.card{background:#fff;border-radius:8px;padding:20px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.card h2{font-size:18px;margin-bottom:15px;padding-bottom:10px;border-bottom:2px solid #1a73e8}
+.form-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.form-group{flex:1;min-width:180px}
+.form-group label{display:block;font-size:13px;font-weight:bold;margin-bottom:4px;color:#555}
+.form-group label .required{color:#e53935}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:8px 10px;border:1px solid #d0d0d0;border-radius:4px;font-size:14px}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:#1a73e8;box-shadow:0 0 0 2px rgba(26,115,232,.15)}
+.form-group textarea{resize:vertical;min-height:60px}
+.btn{padding:8px 20px;border:none;border-radius:4px;font-size:14px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px}
+.btn-primary{background:#1a73e8;color:#fff}.btn-primary:hover{background:#1557b0}
+.btn-success{background:#0f9d58;color:#fff}.btn-success:hover{background:#0b8043}
+.btn-danger{background:#e53935;color:#fff}.btn-danger:hover{background:#c62828}
+.btn-outline{background:transparent;border:1px solid #1a73e8;color:#1a73e8}
+.btn-outline:hover{background:#1a73e8;color:#fff}
+.btn-sm{padding:4px 10px;font-size:12px}
+.nav-bar{display:flex;align-items:center;gap:10px}
+.nav-bar a{color:#fff;text-decoration:none;font-size:14px;padding:8px 16px;border-radius:4px}
+.nav-bar a:hover{background:rgba(255,255,255,.15)}.nav-bar a.active{background:rgba(255,255,255,.2)}
+table{width:100%;border-collapse:collapse}
+table th{background:#f5f5f5;padding:10px 12px;text-align:left;font-size:13px;font-weight:bold;border-bottom:2px solid #ddd;white-space:nowrap}
+table td{padding:10px 12px;border-bottom:1px solid #eee;font-size:13px}
+table tr:hover{background:#fafafa}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:bold}
+.badge-red{background:#ffebee;color:#c62828}.badge-green{background:#e8f5e9;color:#2e7d32}
+.badge-blue{background:#e3f2fd;color:#1565c0}.badge-orange{background:#fff3e0;color:#e65100}
+.badge-purple{background:#f3e5f5;color:#7b1fa2}
+.sessions-list{max-height:280px;overflow-y:auto;border:1px solid #e0e0e0;border-radius:6px;padding:10px;background:#fafafa}
+.sessions-list label{display:flex;align-items:center;gap:8px;padding:5px 8px;font-size:13px;cursor:pointer;border-radius:4px}
+.sessions-list label:hover{background:#e8f0fe}
+.sessions-list input[type=checkbox]{width:16px;height:16px;accent-color:#1a73e8}
+.filter-bar{display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;align-items:center}
+.filter-bar select,.filter-bar input{padding:6px 10px;border:1px solid #d0d0d0;border-radius:4px;font-size:13px}
+.flash{position:fixed;top:20px;right:20px;padding:12px 24px;border-radius:6px;color:#fff;z-index:999;animation:fadeIn .3s;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.flash-success{background:#0f9d58}.flash-error{background:#e53935}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.actions{display:flex;gap:6px}.empty-state{text-align:center;padding:40px;color:#999}
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:20px}
+.stat-card{background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;border-radius:8px;padding:20px;text-align:center}
+.stat-card.green{background:linear-gradient(135deg,#0f9d58,#0b8043)}.stat-card.orange{background:linear-gradient(135deg,#f57c00,#e65100)}
+.stat-card .num{font-size:32px;font-weight:bold}.stat-card .label{font-size:13px;opacity:.85;margin-top:4px}
+</style></head><body>
+<div class="header"><div class="nav-bar"><h1>双选会企业报名系统</h1><a href="index.html" class="active">报名管理</a><a href="summary.html">场次汇总</a></div></div>
+<div class="container">
+<div class="card"><h2>新增 / 编辑报名信息</h2>
+<form id="regForm">
+<input type="hidden" id="editId" value="">
+<div class="form-row">
+<div class="form-group"><label>维护老师<span class="required">*</span></label><select id="teacher" required></select></div>
+<div class="form-group"><label>企业名称<span class="required">*</span></label><input type="text" id="company_name" required></div>
+<div class="form-group"><label>联系人</label><input type="text" id="contact_person"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>报名金额</label><input type="number" id="price" step="0.01"></div>
+<div class="form-group"><label>联系电话</label><input type="text" id="contact_phone"></div>
+<div class="form-group"><label>单位性质</label><select id="company_type"><option value="">请选择</option><option>国有企业</option><option>民营企业</option><option>外资企业</option><option>合资企业</option><option>事业单位</option><option>其他</option></select></div>
+<div class="form-group"><label>所属行业</label><select id="industry"><option value="">请选择</option><option>互联网/IT</option><option>金融/银行</option><option>教育/培训</option><option>医疗/医药</option><option>房地产/建筑</option><option>制造业</option><option>其他</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>是否付款</label><select id="payment_status"><option value="未付款">未付款</option><option value="已付款">已付款</option></select></div>
+<div class="form-group"><label>发票信息</label><input type="text" id="invoice_info"></div>
+</div>
+<div class="form-group"><label>企业简介</label><textarea id="company_intro"></textarea></div>
+<div class="form-group">
+<label>招聘岗位</label><div id="posContainer"><div class="pos-item form-row"><input type="text" class="pos-name" placeholder="岗位名称" style="flex:2"><input type="text" class="pos-count" placeholder="人数" style="flex:1"><button type="button" class="btn btn-sm btn-outline" onclick="removePos(this)">移除</button></div></div>
+<button type="button" class="btn btn-sm btn-success" onclick="addPos()">+ 添加岗位</button>
+</div>
+<div class="form-group">
+<label>招聘联系人</label><div id="recruiterContainer"><div class="recruiter-item form-row"><input type="text" class="recruiter-name" placeholder="姓名" style="flex:1"><input type="text" class="recruiter-phone" placeholder="电话" style="flex:1"><button type="button" class="btn btn-sm btn-outline" onclick="removeRecruiter(this)">移除</button></div></div>
+<button type="button" class="btn btn-sm btn-success" onclick="addRecruiter()">+ 添加联系人</button>
+</div>
+<div class="form-group"><label>报名场次<span class="required">*</span></label><div class="sessions-list" id="sessionsList"></div></div>
+<div style="margin-top:15px;display:flex;gap:10px"><button type="submit" class="btn btn-primary" id="submitBtn">提交报名</button><button type="button" class="btn btn-outline" onclick="resetForm()">重置</button></div>
+</form></div>
+<div class="card">
+<h2>报名数据<span id="dataCount" style="font-size:13px;font-weight:normal;color:#888;margin-left:10px"></span></h2>
+<div class="filter-bar">
+<select id="filterTeacher" onchange="renderTable()"><option value="">全部老师</option></select>
+<input type="text" id="filterCompany" placeholder="搜索企业名称..." onkeyup="renderTable()">
+<button class="btn btn-sm btn-success" onclick="downloadCSV()">导出CSV</button>
+</div>
+<table><thead><tr><th>维护老师</th><th>企业名称</th><th>联系人</th><th>电话</th><th>金额</th><th>单位性质</th><th>报名场次</th><th>时间</th><th>操作</th></tr></thead><tbody id="regTableBody"></tbody></table>
+<div class="empty-state" id="emptyState" style="display:none">暂无报名数据</div>
+</div>
+<div class="card">
+<h2>数据概览</h2>
+<div class="stat-cards" id="statsCards"></div>
+<table><thead><tr><th>维护老师</th><th>报名企业数</th><th>报名总金额</th><th>已付款</th></tr></thead><tbody id="summaryBody"></tbody></table>
+</div></div>
+<script>
+var SS = [{"id": 1, "name": "全国重点高校巡回招聘会", "city": "成都", "university": "四川大学（985/211/双一流）", "date": "9月7日（周一）14:30-17:30", "campus": "望江校区"}, {"id": 2, "name": "全国重点高校巡回招聘会", "city": "成都", "university": "电子科技大学（985/211/双一流）", "date": "9月8日（周二）9:30-12:00", "campus": "清水河校区"}, {"id": 3, "name": "全国重点高校巡回招聘会", "city": "成都", "university": "西南交通大学", "date": "9月8日（周二）14:30-17:30", "campus": "犀浦校区"}, {"id": 4, "name": "全国重点高校巡回招聘会", "city": "成都", "university": "成都理工大学", "date": "9月9日（周三）14:30-17:30", "campus": "校本部"}, {"id": 5, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西北大学", "date": "9月10日（周四）14:30-17:30", "campus": "长安校区"}, {"id": 6, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西南科技大学", "date": "9月11日（周五）14:30-17:30", "campus": "未央校区"}, {"id": 7, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西北大学", "date": "9月14日（周一）14:30-17:30", "campus": "太白校区"}, {"id": 8, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西安科技大学", "date": "9月15日（周二）14:30-17:30", "campus": "雁塔校区"}, {"id": 9, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西安交通大学", "date": "9月16日（周三）14:30-17:30", "campus": "兴庆校区"}, {"id": 10, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西安电子科技大学", "date": "9月17日（周四）14:30-17:30", "campus": "北校区"}, {"id": 11, "name": "全国重点高校巡回招聘会", "city": "西安", "university": "西北工业大学", "date": "9月18日（周五）14:30-17:30", "campus": "友谊校区"}, {"id": 12, "name": "全国重点高校巡回招聘会", "city": "哈尔滨", "university": "哈尔滨工程大学", "date": "9月20日（周日）9:30-12:00", "campus": "本部"}, {"id": 13, "name": "全国重点高校巡回招聘会", "city": "哈尔滨", "university": "哈尔滨工业大学", "date": "9月20日（周日）14:30-17:30", "campus": "一校区"}, {"id": 14, "name": "全国重点高校巡回招聘会", "city": "长春", "university": "吉林大学", "date": "9月21日（周一）14:30-17:30", "campus": "前卫南区"}, {"id": 15, "name": "全国重点高校巡回招聘会", "city": "长沙", "university": "湖南大学", "date": "9月22日（周二）14:30-17:30", "campus": "南湖校区"}, {"id": 16, "name": "全国重点高校巡回招聘会", "city": "长沙", "university": "中南大学", "date": "9月23日（周三）14:30-17:30", "campus": "本部校区"}, {"id": 17, "name": "全国重点高校巡回招聘会", "city": "南京", "university": "南京大学", "date": "9月28日（周一）14:30-17:30", "campus": "鼓楼校区"}, {"id": 18, "name": "全国重点高校巡回招聘会", "city": "南京", "university": "南京航空航天大学", "date": "9月29日（周二）9:30-12:00", "campus": "将军路校区"}, {"id": 19, "name": "全国重点高校巡回招聘会", "city": "南京", "university": "南京理工大学", "date": "9月29日（周二）14:30-17:30", "campus": "南京校区"}, {"id": 20, "name": "全国重点高校巡回招聘会", "city": "南京", "university": "东南大学", "date": "9月30日（周三）9:30-12:00", "campus": "九龙湖校区"}, {"id": 21, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "四川大学", "date": "10月12日（周一）14:30-17:30", "campus": "望江校区"}, {"id": 22, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "成都理工大学", "date": "10月13日（周二）14:30-17:30", "campus": "成都校区"}, {"id": 23, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "电子科技大学", "date": "10月14日（周三）14:30-17:30", "campus": "清水河校区"}, {"id": 24, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "西南交通大学", "date": "10月15日（周四）14:30-17:30", "campus": "犀浦校区"}, {"id": 25, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "成都信息工程大学", "date": "10月16日（周五）9:30-12:00", "campus": "航空港校区"}, {"id": 26, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "南京理工大学", "date": "10月16日（周五）14:30-17:30", "campus": "南京校区"}, {"id": 27, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "西华大学", "date": "10月19日（周一）14:30-17:30", "campus": "校本部"}, {"id": 28, "name": "四川省重点高校巡回招聘会", "city": "成都", "university": "四川农业大学", "date": "10月20日（周二）14:30-17:30", "campus": "成都校区"}];
+var TT = ["张三", "李四", "王五", "赵六", "孙七", "周八"];
+var SK = "shuangxuan_regs";
+function gR(){try{return JSON.parse(localStorage.getItem(SK))||[]}catch(e){return[]}}
+function sR(r){localStorage.setItem(SK,JSON.stringify(r))}
+var SM={};SS.forEach(function(s){SM[s.id]=s});
+function initUI(){
+  TT.forEach(function(t){var o=document.createElement("option");o.value=t;o.textContent=t;document.getElementById("teacher").appendChild(o)});
+  TT.forEach(function(t){var o=document.createElement("option");o.value=t;o.textContent=t;document.getElementById("filterTeacher").appendChild(o)});
+  var sl=document.getElementById("sessionsList");
+  SS.forEach(function(s){var l=document.createElement("label");var c=document.createElement("input");c.type="checkbox";c.value=s.id;c.dataset.city=s.city;l.appendChild(c);l.appendChild(document.createTextNode(s.city+"-"+s.university));sl.appendChild(l)});
+}
+function nowStr(){var d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1+"").padStart(2,"0")+"-"+d.getDate().toString().padStart(2,"0")+" "+d.getHours().toString().padStart(2,"0")+":"+d.getMinutes().toString().padStart(2,"0")+":"+d.getSeconds().toString().padStart(2,"0")}
+function addPos(){var c=document.getElementById("posContainer");var d=document.createElement("div");d.className="pos-item form-row";d.innerHTML='<input type="text" class="pos-name" placeholder="岗位名称" style="flex:2"><input type="text" class="pos-count" placeholder="人数" style="flex:1"><button type="button" class="btn btn-sm btn-outline" onclick="removePos(this)">移除</button>';c.appendChild(d)}
+function removePos(el){el.closest(".pos-item").remove()}
+function addRecruiter(){var c=document.getElementById("recruiterContainer");var d=document.createElement("div");d.className="recruiter-item form-row";d.innerHTML='<input type="text" class="recruiter-name" placeholder="姓名" style="flex:1"><input type="text" class="recruiter-phone" placeholder="电话" style="flex:1"><button type="button" class="btn btn-sm btn-outline" onclick="removeRecruiter(this)">移除</button>';c.appendChild(d)}
+function removeRecruiter(el){el.closest(".recruiter-item").remove()}
+function flash(m,t){var d=document.createElement("div");d.className="flash flash-"+t;d.textContent=m;document.body.appendChild(d);setTimeout(function(){d.remove()},3000)}
+function gSS(){var ids=[];document.querySelectorAll("#sessionsList input:checked").forEach(function(c){ids.push(parseInt(c.value))});return ids}
+document.getElementById("regForm").addEventListener("submit",function(e){e.preventDefault();var ei=document.getElementById("editId").value;var d={teacher:document.getElementById("teacher").value,company_name:document.getElementById("company_name").value,contact_person:document.getElementById("contact_person").value,price:document.getElementById("price").value,contact_phone:document.getElementById("contact_phone").value,company_type:document.getElementById("company_type").value,industry:document.getElementById("industry").value,payment_status:document.getElementById("payment_status").value,invoice_info:document.getElementById("invoice_info").value,company_intro:document.getElementById("company_intro").value,job_positions:[],recruiters:[],selected_sessions:gSS()};document.querySelectorAll("#posContainer .pos-item").forEach(function(el){d.job_positions.push({name:el.querySelector(".pos-name").value,count:el.querySelector(".pos-count").value})});document.querySelectorAll("#recruiterContainer .recruiter-item").forEach(function(el){d.recruiters.push({name:el.querySelector(".recruiter-name").value,phone:el.querySelector(".recruiter-phone").value})});var r=gR();if(ei){var idx=r.findIndex(function(x){return x.id==parseInt(ei)});if(idx>=0){r[idx]=Object.assign(r[idx],d);r[idx].updated_at=nowStr()}}else{d.id=r.length?Math.max.apply(Math,r.map(function(x){return x.id}))+1:1;d.created_at=nowStr();d.updated_at=d.created_at;r.unshift(d)}sR(r);flash(ei?"更新成功":"提交成功","success");resetForm();render();renderS()});
+function resetForm(){document.getElementById("regForm").reset();document.getElementById("editId").value="";document.getElementById("submitBtn").textContent="提交报名";document.querySelectorAll("#posContainer .pos-item").forEach(function(e,i){if(i>0)e.remove()});document.querySelectorAll("#recruiterContainer .recruiter-item").forEach(function(e,i){if(i>0)e.remove()});document.querySelectorAll("#sessionsList input[type=checkbox]").forEach(function(c){c.checked=false})}
+function sD(sids){if(!sids||!sids.length)return"-";var n=sids.map(function(i){var s=SM[i];return s?s.city+"-"+s.university.slice(0,8):i});return n.slice(0,2).join("; ")+(n.length>2?"...":"")}
+function esc(s){var d=document.createElement("div");d.appendChild(document.createTextNode(s));return d.innerHTML}
+function render(){var ft=document.getElementById("filterTeacher").value;var fc=document.getElementById("filterCompany").value.toLowerCase();var a=gR();var f=a;if(ft)f=f.filter(function(r){return r.teacher===ft});if(fc)f=f.filter(function(r){return r.company_name.toLowerCase().includes(fc)});document.getElementById("dataCount").textContent="共"+f.length+"条记录";var tb=document.getElementById("regTableBody");var em=document.getElementById("emptyState");tb.innerHTML="";if(!f.length){em.style.display="block";return}em.style.display="none";f.forEach(function(r){var tr=document.createElement("tr");tr.innerHTML='<td><span class="badge badge-blue">'+esc(r.teacher)+'</span></td><td><strong>'+esc(r.company_name)+'</strong></td><td>'+(r.contact_person||"-")+'</td><td>'+(r.contact_phone||"-")+'</td><td><strong>'+(r.price||"0")+'</strong></td><td>'+(r.company_type||"-")+'</td><td>'+sD(r.selected_sessions)+'</td><td style="font-size:11px;color:#888">'+(r.created_at||"").slice(5,16)+'</td><td><div class="actions"><button class="btn btn-sm btn-danger" onclick="delR('+r.id+')">删除</button></div></td>';tb.appendChild(tr)})}
+function delR(id){if(!confirm("确认删除该记录？"))return;var r=gR();var idx=r.findIndex(function(x){return x.id===id});if(idx>=0)r.splice(idx,1);sR(r);flash("删除成功","success");render();renderS()}
+function renderS(){var r=gR();var st={};var tc=0,tp=0,ts=0;r.forEach(function(x){tc++;tp+=parseFloat(x.price||0);ts+=x.selected_sessions?x.selected_sessions.length:0;if(!st[x.teacher])st[x.teacher]={cnt:0,total:0};st[x.teacher].cnt++;st[x.teacher].total+=parseFloat(x.price||0)});var h="";Object.keys(st).forEach(function(t){h+='<tr><td><span class="badge badge-purple">'+t+'</span></td><td>'+st[t].cnt+'家</td><td>￥'+(st[t].total.toFixed(2))+'</td><td>-</td></tr>'});document.getElementById("summaryBody").innerHTML=h;document.getElementById("statsCards").innerHTML='<div class="stat-card"><div class="num">'+tc+'</div><div class="label">报名企业总数</div></div><div class="stat-card green"><div class="num">'+ts+'</div><div class="label">总报名场次数</div></div><div class="stat-card orange"><div class="num">￥'+(tp.toFixed(0))+'</div><div class="label">报名总金额</div></div>'}
+function downloadCSV(){var r=gR();if(!r.length){flash("暂无数据可导出","error");return}var h=["ID","维护老师","企业名称","联系人","报名金额","联系电话","单位性质","所属行业","是否付款","发票信息","报名场次","提交时间"];var rows=[h];r.forEach(function(x){var ss=(x.selected_sessions||[]).map(function(sid){var s=SM[sid];return s?s.city+"-"+s.university:sid}).join("; ");rows.push([x.id,x.teacher,x.company_name,x.contact_person||"",x.price||"0",x.contact_phone||"",x.company_type||"",x.industry||"",x.payment_status||"未付款",x.invoice_info||"",ss,x.created_at||""])});var csv="\\ufeff"+rows.map(function(rr){return rr.map(function(c){return'"'+String(c).replace(/"/g,'""')+'"'}).join(",")}).join("\\n");var b=new Blob([csv],{type:"text/csv;charset=utf-8"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="双选会报名数据.csv";a.click();URL.revokeObjectURL(a.href)}
+initUI();render();renderS();
+</script></body></html>
